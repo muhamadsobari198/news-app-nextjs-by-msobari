@@ -38,6 +38,7 @@ const Post = ({ data }) => {
 	const img =  data.media?.[0]?.['media-metadata']?.[0]?.url ? `https://nyt.com/${data.media[0]['media-metadata'][0].url}` : 'https://upload.wikimedia.org/wikipedia/commons/4/40/New_York_Times_logo_variation.jpg' 
 	return (
 		<Card className={classes.card}>
+			<Link href={`/articles/${data.id}`} passHref>
 			<CardActionArea>
 				<CardMedia className={classes.media} image={img} title="My Post" />
 				<CardContent>
@@ -52,6 +53,7 @@ const Post = ({ data }) => {
 					</Typography>
 				</CardContent>
 			</CardActionArea>
+			</Link>
 			<CardActions>
 			<Link href={`/articles/${data.id}`} passHref>
 				<Button size="small" color="primary">
