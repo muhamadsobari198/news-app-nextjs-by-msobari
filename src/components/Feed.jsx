@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
 	Container,
 	makeStyles,
-	Button,
 	Grid,
 	Tooltip,
 	CircularProgress,
@@ -13,6 +12,12 @@ import {
 import axios from 'axios';
 import Post from './Post';
 import { ArrowBack, ArrowForward } from '@material-ui/icons';
+
+/* ---------------------- Redux -------------------- */
+
+import { useDispatch, useSelector } from 'react-redux';
+import { _getMostPopularArticles } from '../redux/apiCalls';
+
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -46,31 +51,20 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
+
 const Feed = () => {
 	const classes = useStyles();
 	const [ period, setPeriod ] = useState(1);
-	const [ loading, setLoading ] = useState(false);
-	const [ articles, setArticles ] = useState([]);
+	const { isFetching, articles } = useSelector((state) => state.news);
+	const dispatch = useDispatch();
 
-	useEffect(
-		() => {
-			const getMostPopularArticles = async (section) => {
-				setLoading(true);
-
-				setTimeout(async () => {
-					const res = await axios.get(
-						`https://api.nytimes.com/svc/mostpopular/v2/viewed/${period}.json?api-key=BbG6SkAuBg5dyHnWtQ3J14dkPw9GVQgF`
-					);
-					setArticles(res.data.results);
-					setLoading(false);
-				}, 2000);
-			};
-
-			getMostPopularArticles();
+	useEffect(() => {
+			_getMostPopularArticles(dispatch, period);
 			window.scrollTo({ top: 0, behavior: 'smooth' });
 		},
 		[ period ]
 	);
+
 
 	const handleChangePeriod = (type) => {
 		if (type === 'next') {
@@ -116,7 +110,7 @@ const Feed = () => {
 
 	const Loading = () => {
 		return (
-			loading && (
+			isFetching && (
 				<Box className={classes.circullar}>
 					<CircularProgress color="primary" />
 				</Box>
@@ -125,7 +119,7 @@ const Feed = () => {
 	};
 
 	const ButtonPrevNext = () => {
-		if (!loading || period !== 1) {
+		if (!isFetching || period !== 1) {
 			return (
 				<React.Fragment>
 					<ButtonPrev />
@@ -137,7 +131,7 @@ const Feed = () => {
 	};
 
 	const Articles = () => {
-		if (!loading) {
+		if (!isFetching) {
 			if (articles.length) {
 				return articles.map((article, idx) => {
 					return (
