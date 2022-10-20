@@ -1,5 +1,6 @@
 import Navbar from "./Navbar";
 import Leftbar from "./Leftbar";
+import Rightbar from "./Rightbar";
 import { Box, Grid } from '@material-ui/core';
 
 const Layout = ({ children }) => {
@@ -14,7 +15,7 @@ const Layout = ({ children }) => {
            {children}
         </Grid>
         <Grid item sm={10} xs={10} md={2}>
-            Rightbar
+            <Rightbar/>
         </Grid>
     </Grid>
 </Box>
