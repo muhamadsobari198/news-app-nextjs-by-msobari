@@ -1,4 +1,4 @@
-# News App with Next.JS by Muhamad Sobari
+# News App with (Next.js, Redux, MUI) by Muhamad Sobari
 ### Screenshot of News App
 
 ![preview img](/preview1.png)
