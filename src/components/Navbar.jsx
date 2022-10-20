@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	icons: {
 		alignItems: 'center',
-		display: (props) => (props.open ? 'none' : 'flex')
+		display: 'flex'
 	},
 	brand: {
 		marginRight: theme.spacing(1)
