@@ -1,19 +1,22 @@
 import React from 'react';
 import { useEffect } from 'react';
+import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from 'react-redux';
 import { _getArticleById } from '../../src/redux/apiCalls';
 
 import {
 	Container,
-	Button,
 	Card,
 	CardActionArea,
-	CardActions,
 	CardContent,
 	CardMedia,
 	makeStyles,
-	Typography
+	Typography,
+	Tooltip,
+	Fab
 } from '@material-ui/core';
+
+import { ArrowBack } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
 	container: {
@@ -23,15 +26,27 @@ const useStyles = makeStyles((theme) => ({
 		marginBottom: theme.spacing(5)
 	},
 	media: {
-		height: 250,
+		height: 150,
 		[theme.breakpoints.down('sm')]: {
 			height: 150
 		}
-	}
+	},
+	title: {
+		fontSize: 22,
+		fontWeight: 500,
+		color: '#555',
+		marginBottom: theme.spacing(2)
+	},
+	fabLeft: {
+		position: 'fixed',
+		bottom: 60,
+		left: '20%'
+	},
 }));
 
 const Article = ({ id }) => {
 	const classes = useStyles();
+	const router = useRouter()
 
 	const { detail } = useSelector((state) => state.news);
 	const isExist = Object.keys(detail).length > 0;
@@ -45,9 +60,10 @@ const Article = ({ id }) => {
 	);
 
 	const img =  detail.media?.[0]?.['media-metadata']?.[0]?.url ? `https://nyt.com/${detail.media[0]['media-metadata'][0].url}` : 'https://upload.wikimedia.org/wikipedia/commons/4/40/New_York_Times_logo_variation.jpg'
-
+	
 	return (
 		<Container className={classes.container}>
+			
 			{isExist && (
 				<Card className={classes.card}>
 					<CardActionArea>
@@ -64,6 +80,13 @@ const Article = ({ id }) => {
 					</CardActionArea>
 				</Card>
 			)}
+
+			<Tooltip title="Back to Home" aria-label="back" onClick={() => router.back()}>
+				<Fab color="primary" className={classes.fabLeft} variant="contained">
+					<ArrowBack />
+				</Fab>
+			</Tooltip>
+
 		</Container>
 	);
 };
